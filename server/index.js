@@ -11,11 +11,13 @@ import edtRoutes from "./routes/edt.js";
 
 const app = express();
 const httpServer = createServer(app);
+const CLIENT_ORIGIN = process.env.CLIENT_ORIGIN ?? "http://localhost:5173";
+
 const io = new Server(httpServer, {
-  cors: { origin: "http://localhost:5173" },
+  cors: { origin: [CLIENT_ORIGIN, "http://localhost:5174"] },
 });
 
-app.use(cors({ origin: "http://localhost:5173" }));
+app.use(cors({ origin: [CLIENT_ORIGIN, "http://localhost:5174"] }));
 app.use(express.json());
 
 // Rend io accessible dans toutes les routes via req.io
