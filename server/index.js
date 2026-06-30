@@ -8,6 +8,7 @@ import adminRoutes from "./routes/admin.js";
 import devoirsRoutes from "./routes/devoirs.js";
 import notesRoutes from "./routes/notes.js";
 import edtRoutes from "./routes/edt.js";
+import profilRoutes from "./routes/profil.js";
 
 const app = express();
 const httpServer = createServer(app);
@@ -35,6 +36,7 @@ app.use("/admin", adminRoutes);
 app.use("/devoirs", devoirsRoutes);
 app.use("/notes", notesRoutes);
 app.use("/edt", edtRoutes);
+app.use("/profil", profilRoutes);
 
 // Connexion Socket.IO — chaque utilisateur rejoint la room de son groupe
 io.on("connection", (socket) => {

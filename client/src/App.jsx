@@ -7,6 +7,7 @@ import Devoirs from "./pages/Devoirs";
 import Notes from "./pages/Notes";
 import EDT from "./pages/EDT";
 import Admin from "./pages/Admin";
+import Profil from "./pages/Profil";
 
 function PrivateRoute({ children }) {
   const { token } = useAuth();
@@ -25,6 +26,7 @@ function App() {
           <Route path="/notes" element={<PrivateRoute><Notes /></PrivateRoute>} />
           <Route path="/edt" element={<PrivateRoute><EDT /></PrivateRoute>} />
           <Route path="/admin" element={<PrivateRoute><Admin /></PrivateRoute>} />
+          <Route path="/profil" element={<PrivateRoute><Profil /></PrivateRoute>} />
           <Route path="*" element={<Navigate to="/login" />} />
         </Routes>
       </BrowserRouter>

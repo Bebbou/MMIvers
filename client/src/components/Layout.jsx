@@ -7,6 +7,7 @@ const navItems = [
   { to: "/devoirs", label: "Devoirs", icon: "📚" },
   { to: "/notes", label: "Notes", icon: "📊" },
   { to: "/edt", label: "EDT", icon: "📅" },
+  { to: "/profil", label: "Profil", icon: "👤" },
 ];
 
 export default function Layout({ children }) {
