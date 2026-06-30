@@ -1,0 +1,144 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.header h1 {
+  font-size: 1.8rem;
+  font-weight: 700;
+}
+
+.header button {
+  background: #818cf8;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 0.6rem 1.2rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.header button:hover {
+  background: #6366f1;
+}
+
+.form {
+  background: #1a1d27;
+  border: 1px solid #2d3148;
+  border-radius: 12px;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.form input, .form select {
+  background: #0f1117;
+  border: 1px solid #2d3148;
+  border-radius: 8px;
+  padding: 0.65rem 1rem;
+  color: #e2e8f0;
+  font-size: 0.95rem;
+  outline: none;
+}
+
+.form input:focus, .form select:focus {
+  border-color: #818cf8;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+}
+
+.form button {
+  background: #818cf8;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 0.65rem 1.5rem;
+  font-weight: 600;
+  cursor: pointer;
+  align-self: flex-end;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 1rem;
+}
+
+.day {
+  background: #1a1d27;
+  border: 1px solid #2d3148;
+  border-radius: 12px;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.dayTitle {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #818cf8;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.25rem;
+}
+
+.empty {
+  color: #2d3148;
+  font-size: 1.2rem;
+  text-align: center;
+  padding: 1rem 0;
+}
+
+.cours {
+  background: #0f1117;
+  border-radius: 8px;
+  padding: 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  position: relative;
+}
+
+.coursTime {
+  font-size: 0.75rem;
+  color: #64748b;
+}
+
+.coursMatiere {
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.coursMeta {
+  font-size: 0.8rem;
+  color: #94a3b8;
+}
+
+.deleteBtn {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  background: none;
+  border: none;
+  color: #64748b;
+  cursor: pointer;
+  font-size: 0.8rem;
+}
+
+.deleteBtn:hover {
+  color: #ef4444;
+}

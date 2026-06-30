@@ -1,6 +1,12 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider, useAuth } from "./context/AuthContext";
 import Login from "./pages/Login";
+import Register from "./pages/Register";
+import Dashboard from "./pages/Dashboard";
+import Devoirs from "./pages/Devoirs";
+import Notes from "./pages/Notes";
+import EDT from "./pages/EDT";
+import Admin from "./pages/Admin";
 
 function PrivateRoute({ children }) {
   const { token } = useAuth();
@@ -13,11 +19,12 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/login" element={<Login />} />
-          <Route path="/dashboard" element={
-            <PrivateRoute>
-              <div style={{ padding: "2rem" }}>Dashboard (à construire)</div>
-            </PrivateRoute>
-          } />
+          <Route path="/register" element={<Register />} />
+          <Route path="/dashboard" element={<PrivateRoute><Dashboard /></PrivateRoute>} />
+          <Route path="/devoirs" element={<PrivateRoute><Devoirs /></PrivateRoute>} />
+          <Route path="/notes" element={<PrivateRoute><Notes /></PrivateRoute>} />
+          <Route path="/edt" element={<PrivateRoute><EDT /></PrivateRoute>} />
+          <Route path="/admin" element={<PrivateRoute><Admin /></PrivateRoute>} />
           <Route path="*" element={<Navigate to="/login" />} />
         </Routes>
       </BrowserRouter>
