@@ -28,7 +28,7 @@ app.use((req, res, next) => {
 });
 
 app.get("/", (req, res) => {
-  res.json({ message: "Serveur MMIvers en ligne !" });
+  res.json({ message: "Serveur Pronote-MMI en ligne !" });
 });
 
 app.use("/auth", authRoutes);

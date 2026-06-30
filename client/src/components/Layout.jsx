@@ -23,7 +23,7 @@ export default function Layout({ children }) {
   return (
     <div className={styles.layout}>
       <aside className={styles.sidebar}>
-        <div className={styles.logo}>MMIvers</div>
+        <div className={styles.logo}>Pronote-MMI</div>
         <div className={styles.userInfo}>
           <span className={styles.userName}>{user?.nom}</span>
           <span className={styles.userGroupe}>{user?.groupe}</span>
