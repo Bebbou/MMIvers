@@ -1,13 +1,14 @@
 import { NavLink, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import { Home, BookOpen, BarChart2, Calendar, User, Settings, LogOut, LayoutGrid } from "lucide-react";
 import styles from "./Layout.module.css";
 
 const navItems = [
-  { to: "/dashboard", label: "Accueil", icon: "🏠" },
-  { to: "/devoirs", label: "Devoirs", icon: "📚" },
-  { to: "/notes", label: "Notes", icon: "📊" },
-  { to: "/edt", label: "EDT", icon: "📅" },
-  { to: "/profil", label: "Profil", icon: "👤" },
+  { to: "/dashboard", label: "Accueil", icon: Home },
+  { to: "/devoirs", label: "Devoirs", icon: BookOpen },
+  { to: "/notes", label: "Notes", icon: BarChart2 },
+  { to: "/edt", label: "EDT", icon: Calendar },
+  { to: "/profil", label: "Profil", icon: User },
 ];
 
 export default function Layout({ children }) {
@@ -36,7 +37,7 @@ export default function Layout({ children }) {
                 `${styles.navLink} ${isActive ? styles.active : ""}`
               }
             >
-              <span>{item.icon}</span>
+              <item.icon size={15} strokeWidth={1.5} />
               {item.label}
             </NavLink>
           ))}
@@ -47,12 +48,22 @@ export default function Layout({ children }) {
                 `${styles.navLink} ${isActive ? styles.active : ""}`
               }
             >
-              <span>⚙️</span>
+              <Settings size={15} strokeWidth={1.5} />
               Admin
             </NavLink>
           )}
         </nav>
+        <NavLink
+          to="/canvas"
+          className={({ isActive }) =>
+            `${styles.canvasBtn} ${isActive ? styles.canvasBtnActive : ""}`
+          }
+        >
+          <LayoutGrid size={13} strokeWidth={1.5} />
+          Mode Canvas
+        </NavLink>
         <button className={styles.logout} onClick={handleLogout}>
+          <LogOut size={13} strokeWidth={1.5} />
           Déconnexion
         </button>
       </aside>

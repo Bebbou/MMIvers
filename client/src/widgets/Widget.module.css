@@ -1,0 +1,244 @@
+.widget {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-left: 2px solid var(--accent);
+  padding: 1.25rem;
+  width: 380px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  box-shadow: 0 0 20px rgba(255, 0, 85, 0.08);
+  position: relative;
+}
+
+.widget::before {
+  content: "";
+  position: absolute;
+  top: -1px;
+  right: -1px;
+  width: 20px;
+  height: 20px;
+  border-top: 2px solid var(--accent);
+  border-right: 2px solid var(--accent);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.6rem;
+}
+
+.icon {
+  font-size: 0.9rem;
+}
+
+.header h3 {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  flex: 1;
+}
+
+.moyenne {
+  color: var(--accent);
+  font-weight: 400;
+}
+
+.addBtn {
+  background: none;
+  border: 1px solid var(--border);
+  color: var(--accent);
+  width: 24px;
+  height: 24px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Courier New', monospace;
+  transition: background 0.1s;
+}
+
+.addBtn:hover {
+  background: var(--accent);
+  color: #000;
+  border-color: var(--accent);
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  background: var(--bg-dark);
+  border: 1px solid var(--border);
+  padding: 0.75rem;
+}
+
+.input {
+  background: var(--bg-input);
+  border: 1px solid var(--border);
+  padding: 0.45rem 0.75rem;
+  color: var(--text);
+  font-size: 0.8rem;
+  font-family: 'Courier New', monospace;
+  outline: none;
+}
+
+.input:focus {
+  border-color: var(--accent);
+}
+
+.submitBtn {
+  background: var(--accent);
+  color: #000;
+  border: none;
+  font-weight: 700;
+  font-family: 'Courier New', monospace;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  font-size: 0.7rem;
+  cursor: pointer;
+  align-self: flex-end;
+  padding: 0.4rem 1rem;
+}
+
+.submitBtn:hover {
+  background: var(--accent-hover);
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  max-height: 280px;
+  overflow-y: auto;
+}
+
+.empty {
+  color: var(--text-faint);
+  font-size: 0.75rem;
+  text-align: center;
+  padding: 0.5rem 0;
+  letter-spacing: 1px;
+}
+
+.empty::before { content: "// "; }
+
+.item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--bg-dark);
+  border-left: 1px solid var(--border);
+  padding: 0.5rem 0.65rem;
+}
+
+.item:hover {
+  border-left-color: var(--accent);
+}
+
+.itemMain {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex: 1;
+  min-width: 0;
+}
+
+.tag {
+  color: var(--accent);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.itemTitle {
+  font-size: 0.8rem;
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--text-muted);
+}
+
+.itemDate {
+  font-size: 0.7rem;
+  color: var(--text-faint);
+  white-space: nowrap;
+}
+
+.noteValeur {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--accent);
+  white-space: nowrap;
+}
+
+.deleteBtn {
+  background: none;
+  border: none;
+  color: var(--text-faint);
+  cursor: pointer;
+  font-size: 0.75rem;
+  padding: 0.2rem;
+  margin-left: 0.5rem;
+  font-family: 'Courier New', monospace;
+}
+
+.deleteBtn:hover {
+  color: var(--danger);
+}
+
+.profilInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  background: var(--bg-dark);
+  border: 1px solid var(--border);
+  padding: 0.75rem;
+}
+
+.profilRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.8rem;
+  color: var(--text-faint);
+}
+
+.profilRow strong {
+  color: var(--text-muted);
+  letter-spacing: 1px;
+}
+
+.sectionLabel {
+  font-size: 0.7rem;
+  color: var(--text-faint);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+}
+
+.sectionLabel::before { content: "-- "; color: var(--accent); }
+
+.errorMsg {
+  color: var(--danger);
+  font-size: 0.75rem;
+  letter-spacing: 1px;
+}
+
+.errorMsg::before { content: "[ERR] "; }
+
+.successMsg {
+  color: var(--success);
+  font-size: 0.75rem;
+  letter-spacing: 1px;
+}
+
+.successMsg::before { content: "[OK] "; }

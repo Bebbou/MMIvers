@@ -5,12 +5,22 @@
 }
 
 .page h1 {
-  font-size: 1.8rem;
+  font-size: 1rem;
   font-weight: 700;
+  letter-spacing: 6px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.page h1::before {
+  content: "> ";
+  color: var(--accent);
 }
 
 .subtitle {
-  color: #818cf8;
+  color: var(--text-faint);
+  font-size: 0.75rem;
+  letter-spacing: 2px;
   margin-top: -1rem;
 }
 
@@ -22,17 +32,28 @@
 }
 
 .card {
-  background: #1a1d27;
-  border: 1px solid #2d3148;
-  border-radius: 12px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-left: 2px solid var(--accent);
   padding: 1.5rem;
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
-  font-size: 0.95rem;
-  color: #94a3b8;
+  font-size: 0.8rem;
+  color: var(--text-faint);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: border-color 0.1s, color 0.1s;
+}
+
+.card:hover {
+  color: var(--text-muted);
+  border-color: var(--accent);
 }
 
 .card span {
-  font-size: 1.8rem;
+  color: var(--accent);
+  font-size: 0.7rem;
+  letter-spacing: 3px;
 }

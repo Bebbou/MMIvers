@@ -5,35 +5,50 @@
 }
 
 .page h1 {
-  font-size: 1.8rem;
+  font-size: 1rem;
   font-weight: 700;
+  letter-spacing: 6px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.page h1::before {
+  content: "> ";
+  color: var(--accent);
 }
 
 .sectionTitle {
-  font-size: 1rem;
+  font-size: 0.75rem;
   font-weight: 600;
-  color: #94a3b8;
+  color: var(--text-faint);
+  letter-spacing: 3px;
+  text-transform: uppercase;
   margin-bottom: 0.75rem;
+}
+
+.sectionTitle::before {
+  content: "-- ";
+  color: var(--accent);
 }
 
 .list {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 0.4rem;
 }
 
 .card {
-  background: #1a1d27;
-  border: 1px solid #2d3148;
-  border-radius: 12px;
-  padding: 1rem 1.5rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-left: 2px solid var(--border);
+  padding: 0.85rem 1.25rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
 .pending {
-  border-color: #f59e0b;
+  border-left-color: var(--warning);
 }
 
 .info {
@@ -43,49 +58,57 @@
 }
 
 .nom {
-  font-weight: 600;
+  font-weight: 700;
+  font-size: 0.85rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--text-muted);
 }
 
 .email {
-  color: #64748b;
-  font-size: 0.9rem;
+  color: var(--text-faint);
+  font-size: 0.8rem;
 }
 
 .groupe {
-  background: #2d3148;
-  color: #818cf8;
-  padding: 0.2rem 0.6rem;
-  border-radius: 6px;
-  font-size: 0.8rem;
-  font-weight: 600;
+  color: var(--accent);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  border: 1px solid var(--accent);
+  padding: 0.15rem 0.5rem;
 }
 
 .validateBtn {
-  background: #22c55e;
-  color: #fff;
-  border: none;
-  border-radius: 8px;
-  padding: 0.5rem 1rem;
-  font-weight: 600;
+  background: none;
+  color: var(--success);
+  border: 1px solid var(--success);
+  padding: 0.35rem 0.9rem;
+  font-weight: 700;
+  font-family: 'Courier New', monospace;
+  font-size: 0.75rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
   cursor: pointer;
-  font-size: 0.9rem;
+  transition: background 0.1s, color 0.1s;
 }
 
 .validateBtn:hover {
-  background: #16a34a;
+  background: var(--success);
+  color: #000;
 }
 
 .roleSelect {
-  background: #0f1117;
-  border: 1px solid #2d3148;
-  border-radius: 8px;
+  background: var(--bg-input);
+  border: 1px solid var(--border);
   padding: 0.4rem 0.75rem;
-  color: #e2e8f0;
-  font-size: 0.9rem;
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  font-family: 'Courier New', monospace;
   cursor: pointer;
   outline: none;
 }
 
 .roleSelect:focus {
-  border-color: #818cf8;
+  border-color: var(--accent);
 }

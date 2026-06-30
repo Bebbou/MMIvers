@@ -6,26 +6,48 @@
 }
 
 .card {
-  background: #1a1d27;
-  border: 1px solid #2d3148;
-  border-radius: 12px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
   padding: 2.5rem;
   width: 100%;
   max-width: 400px;
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 1.25rem;
+  position: relative;
+}
+
+/* Coin accent en haut à gauche */
+.card::before {
+  content: "";
+  position: absolute;
+  top: -1px;
+  left: -1px;
+  width: 40px;
+  height: 40px;
+  border-top: 2px solid var(--accent);
+  border-left: 2px solid var(--accent);
 }
 
 .card h1 {
-  font-size: 1.8rem;
+  font-size: 1.5rem;
   font-weight: 700;
-  color: #818cf8;
+  color: var(--accent);
+  letter-spacing: 6px;
+  text-transform: uppercase;
 }
 
 .subtitle {
-  color: #94a3b8;
-  margin-top: -0.5rem;
+  color: var(--text-faint);
+  font-size: 0.75rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-top: -0.75rem;
+}
+
+.subtitle::before {
+  content: "> ";
+  color: var(--accent);
 }
 
 .card form {
@@ -34,61 +56,59 @@
   gap: 0.75rem;
 }
 
-.card select {
-  background: #0f1117;
-  border: 1px solid #2d3148;
-  border-radius: 8px;
-  padding: 0.75rem 1rem;
-  color: #e2e8f0;
-  font-size: 1rem;
-  outline: none;
-}
-
-.card select:focus {
-  border-color: #818cf8;
-}
-
+.card select,
 .card input {
-  background: #0f1117;
-  border: 1px solid #2d3148;
-  border-radius: 8px;
+  background: var(--bg-input);
+  border: 1px solid var(--border);
   padding: 0.75rem 1rem;
-  color: #e2e8f0;
-  font-size: 1rem;
+  color: var(--text);
+  font-size: 0.85rem;
+  font-family: 'Courier New', monospace;
   outline: none;
+  letter-spacing: 1px;
 }
 
+.card select:focus,
 .card input:focus {
-  border-color: #818cf8;
+  border-color: var(--accent);
 }
 
 .card button {
-  background: #818cf8;
+  background: var(--accent);
   color: #fff;
   border: none;
-  border-radius: 8px;
   padding: 0.75rem;
-  font-size: 1rem;
-  font-weight: 600;
+  font-size: 0.8rem;
+  font-weight: 700;
+  font-family: 'Courier New', monospace;
+  letter-spacing: 3px;
+  text-transform: uppercase;
   cursor: pointer;
   margin-top: 0.5rem;
+  transition: background 0.1s;
 }
 
 .card button:hover {
-  background: #6366f1;
+  background: var(--accent-hover);
 }
 
 .card a {
   text-align: center;
-  color: #94a3b8;
-  font-size: 0.9rem;
+  color: var(--text-faint);
+  font-size: 0.75rem;
+  letter-spacing: 1px;
 }
 
 .card a:hover {
-  color: #818cf8;
+  color: var(--accent);
 }
 
 .error {
-  color: #f87171;
-  font-size: 0.9rem;
+  color: var(--danger);
+  font-size: 0.8rem;
+  letter-spacing: 1px;
+}
+
+.error::before {
+  content: "[ERR] ";
 }

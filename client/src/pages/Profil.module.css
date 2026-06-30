@@ -6,50 +6,70 @@
 }
 
 .page h1 {
-  font-size: 1.8rem;
+  font-size: 1rem;
   font-weight: 700;
+  letter-spacing: 6px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.page h1::before {
+  content: "> ";
+  color: var(--accent);
 }
 
 .infoCard {
-  background: #1a1d27;
-  border: 1px solid #2d3148;
-  border-radius: 12px;
-  padding: 1.5rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-left: 2px solid var(--accent);
+  padding: 1.25rem;
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: 0.6rem;
 }
 
 .infoRow {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  font-size: 0.85rem;
 }
 
 .label {
-  color: #64748b;
-  font-size: 0.9rem;
+  color: var(--text-faint);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  font-size: 0.75rem;
 }
 
 .groupe {
-  background: #2d3148;
-  color: #818cf8;
-  padding: 0.2rem 0.6rem;
-  border-radius: 6px;
-  font-size: 0.85rem;
-  font-weight: 600;
+  color: var(--accent);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  border: 1px solid var(--accent);
+  padding: 0.15rem 0.5rem;
 }
 
 .role {
-  color: #94a3b8;
-  font-size: 0.9rem;
-  text-transform: capitalize;
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
 .section h2 {
-  font-size: 1.1rem;
+  font-size: 0.75rem;
   font-weight: 600;
+  color: var(--text-faint);
+  letter-spacing: 3px;
+  text-transform: uppercase;
   margin-bottom: 1rem;
+}
+
+.section h2::before {
+  content: "-- ";
+  color: var(--accent);
 }
 
 .form {
@@ -59,41 +79,50 @@
 }
 
 .form input {
-  background: #1a1d27;
-  border: 1px solid #2d3148;
-  border-radius: 8px;
+  background: var(--bg-input);
+  border: 1px solid var(--border);
   padding: 0.75rem 1rem;
-  color: #e2e8f0;
-  font-size: 0.95rem;
+  color: var(--text);
+  font-size: 0.85rem;
+  font-family: 'Courier New', monospace;
   outline: none;
 }
 
 .form input:focus {
-  border-color: #818cf8;
+  border-color: var(--accent);
 }
 
 .form button {
-  background: #818cf8;
-  color: #fff;
+  background: var(--accent);
+  color: #000;
   border: none;
-  border-radius: 8px;
-  padding: 0.75rem;
-  font-size: 0.95rem;
-  font-weight: 600;
+  padding: 0.65rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  font-family: 'Courier New', monospace;
+  letter-spacing: 3px;
+  text-transform: uppercase;
   cursor: pointer;
   margin-top: 0.25rem;
+  transition: background 0.1s;
 }
 
 .form button:hover {
-  background: #6366f1;
+  background: var(--accent-hover);
 }
 
 .error {
-  color: #f87171;
-  font-size: 0.9rem;
+  color: var(--danger);
+  font-size: 0.8rem;
+  letter-spacing: 1px;
 }
 
+.error::before { content: "[ERR] "; }
+
 .success {
-  color: #22c55e;
-  font-size: 0.9rem;
+  color: var(--success);
+  font-size: 0.8rem;
+  letter-spacing: 1px;
 }
+
+.success::before { content: "[OK] "; }

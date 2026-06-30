@@ -1,0 +1,96 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+  font-family: 'Courier New', Courier, monospace;
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.65rem 1.5rem;
+  background: #0a0a0a;
+  border-bottom: 1px solid var(--accent);
+  z-index: 10;
+}
+
+.logo {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--accent);
+  letter-spacing: 6px;
+  text-transform: uppercase;
+  border-left: 2px solid var(--accent);
+  padding-left: 0.6rem;
+  margin-right: auto;
+}
+
+.userInfo {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.75rem;
+  color: var(--text-faint);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.groupe {
+  color: var(--accent);
+  border: 1px solid var(--accent);
+  padding: 0.15rem 0.5rem;
+  font-size: 0.7rem;
+  letter-spacing: 2px;
+}
+
+.backBtn {
+  background: none;
+  border: 1px solid var(--border);
+  color: var(--text-faint);
+  padding: 0.35rem 0.9rem;
+  font-size: 0.7rem;
+  font-family: 'Courier New', monospace;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  transition: border-color 0.1s, color 0.1s;
+  text-decoration: none;
+}
+
+.backBtn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.logout {
+  background: none;
+  border: 1px solid var(--border);
+  color: var(--text-faint);
+  padding: 0.35rem 0.9rem;
+  font-size: 0.7rem;
+  font-family: 'Courier New', monospace;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  transition: border-color 0.1s, color 0.1s;
+}
+
+.logout:hover {
+  border-color: var(--danger);
+  color: var(--danger);
+}
+
+.canvas {
+  flex: 1;
+  background: var(--bg-dark);
+  background-image: radial-gradient(circle, #1a1a1a 1px, transparent 1px);
+  background-size: 30px 30px;
+}
