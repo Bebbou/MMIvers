@@ -3,6 +3,7 @@ import { useAuth } from "../context/AuthContext";
 import { Home, BookOpen, BarChart2, Calendar, User, Settings, LogOut, LayoutGrid, Sun, Moon, Menu, X } from "lucide-react";
 import { useTheme } from "../hooks/useTheme";
 import { useState } from "react";
+import ChatPanel from "./ChatPanel";
 import styles from "./Layout.module.css";
 
 const navItems = [
@@ -95,6 +96,7 @@ export default function Layout({ children }) {
         </header>
 
         <main className={styles.main}>{children}</main>
+        <ChatPanel />
 
         {/* Bottom nav mobile */}
         <nav className={styles.bottomNav}>
