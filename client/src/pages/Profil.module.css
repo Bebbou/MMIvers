@@ -82,7 +82,7 @@
   border-color: var(--accent);
 }
 
-.form button {
+.form > button {
   background: var(--accent);
   color: #fff;
   border: none;
@@ -96,7 +96,7 @@
   transition: background 0.15s;
 }
 
-.form button:hover {
+.form > button:hover {
   background: var(--accent-hover);
 }
 

@@ -62,7 +62,7 @@
   border-color: var(--accent);
 }
 
-.card button {
+.card form > button {
   background: var(--accent);
   color: #fff;
   border: none;
@@ -76,7 +76,7 @@
   transition: background 0.15s;
 }
 
-.card button:hover {
+.card form > button:hover {
   background: var(--accent-hover);
 }
 
