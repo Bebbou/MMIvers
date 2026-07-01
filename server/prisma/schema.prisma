@@ -31,6 +31,7 @@ model User {
   devoirsCreees      Devoir[]           @relation("AuteurDevoir")
   pushSubscriptions  PushSubscription[]
   messages           Message[]
+  passwordResets     PasswordReset[]
 }
 
 
@@ -89,6 +90,14 @@ model Message {
 
   channel   Channel @relation(fields: [channelId], references: [id], onDelete: Cascade)
   channelId Int
+model PasswordReset {
+  id        Int      @id @default(autoincrement())
+  token     String   @unique
+  expiresAt DateTime
+  used      Boolean  @default(false)
+
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId Int
 }
 
 model Cours {
