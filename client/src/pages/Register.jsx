@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../api/index.js";
+import PasswordInput from "../components/PasswordInput";
 import styles from "./Login.module.css";
 
 const GROUPES = ["TA1", "TA2", "TB1", "TB2"];
@@ -63,9 +64,8 @@ export default function Register() {
             onChange={handleChange}
             required
           />
-          <input
+          <PasswordInput
             name="password"
-            type="password"
             placeholder="Mot de passe"
             value={form.password}
             onChange={handleChange}

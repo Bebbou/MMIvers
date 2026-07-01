@@ -3,6 +3,7 @@ import { useAuth } from "../context/AuthContext";
 import Layout from "../components/Layout";
 import api from "../api/index.js";
 import { usePushNotifications } from "../hooks/usePushNotifications.js";
+import PasswordInput from "../components/PasswordInput";
 import styles from "./Profil.module.css";
 
 export default function Profil() {
@@ -79,25 +80,22 @@ export default function Profil() {
         <div className={styles.section}>
           <h2>Changer le mot de passe</h2>
           <form className={styles.form} onSubmit={handleSubmit}>
-            <input
+            <PasswordInput
               name="actuel"
-              type="password"
               placeholder="Mot de passe actuel"
               value={form.actuel}
               onChange={handleChange}
               required
             />
-            <input
+            <PasswordInput
               name="nouveau"
-              type="password"
               placeholder="Nouveau mot de passe (6 caractères min.)"
               value={form.nouveau}
               onChange={handleChange}
               required
             />
-            <input
+            <PasswordInput
               name="confirmation"
-              type="password"
               placeholder="Confirmer le nouveau mot de passe"
               value={form.confirmation}
               onChange={handleChange}
