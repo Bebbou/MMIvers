@@ -2,7 +2,8 @@ import { ReactFlow, Background, Controls, MiniMap, useNodesState } from "@xyflow
 import "@xyflow/react/dist/style.css";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate, Link } from "react-router-dom";
-import { LogOut, ArrowLeft } from "lucide-react";
+import { LogOut, ArrowLeft, Sun, Moon } from "lucide-react";
+import { useTheme } from "../hooks/useTheme";
 import DevoirsWidget from "../widgets/DevoirsWidget";
 import NotesWidget from "../widgets/NotesWidget";
 import ProfilWidget from "../widgets/ProfilWidget";
@@ -23,6 +24,7 @@ const initialNodes = [
 export default function Canvas() {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
+  const { theme, toggleTheme } = useTheme();
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
 
   function handleLogout() {
@@ -38,6 +40,9 @@ export default function Canvas() {
           <span>{user?.nom}</span>
           <span className={styles.groupe}>{user?.groupe}</span>
         </div>
+        <button className={styles.themeBtn} onClick={toggleTheme}>
+          {theme === "light" ? <Moon size={12} strokeWidth={1.5} /> : <Sun size={12} strokeWidth={1.5} />}
+        </button>
         <Link to="/dashboard" className={styles.backBtn}>
           <ArrowLeft size={12} strokeWidth={1.5} />
           Vue classique

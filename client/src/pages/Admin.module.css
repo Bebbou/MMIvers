@@ -5,30 +5,19 @@
 }
 
 .page h1 {
-  font-size: 1rem;
+  font-size: 1.25rem;
   font-weight: 700;
-  letter-spacing: 6px;
-  text-transform: uppercase;
-  color: var(--text-muted);
-}
-
-.page h1::before {
-  content: "> ";
-  color: var(--accent);
+  color: var(--text);
+  letter-spacing: -0.3px;
 }
 
 .sectionTitle {
-  font-size: 0.75rem;
+  font-size: 0.8rem;
   font-weight: 600;
   color: var(--text-faint);
-  letter-spacing: 3px;
   text-transform: uppercase;
+  letter-spacing: 0.8px;
   margin-bottom: 0.75rem;
-}
-
-.sectionTitle::before {
-  content: "-- ";
-  color: var(--accent);
 }
 
 .list {
@@ -40,15 +29,21 @@
 .card {
   background: var(--bg-card);
   border: 1px solid var(--border);
-  border-left: 2px solid var(--border);
+  border-radius: 10px;
   padding: 0.85rem 1.25rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  transition: box-shadow 0.15s;
+}
+
+.card:hover {
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
 }
 
 .pending {
-  border-left-color: var(--warning);
+  border-left: 3px solid var(--warning);
+  border-radius: 0 10px 10px 0;
 }
 
 .info {
@@ -58,10 +53,8 @@
 }
 
 .nom {
-  font-weight: 700;
-  font-size: 0.85rem;
-  letter-spacing: 1px;
-  text-transform: uppercase;
+  font-weight: 600;
+  font-size: 0.875rem;
   color: var(--text-muted);
 }
 
@@ -72,41 +65,42 @@
 
 .groupe {
   color: var(--accent);
-  font-size: 0.7rem;
+  font-size: 0.75rem;
   font-weight: 700;
-  letter-spacing: 2px;
-  border: 1px solid var(--accent);
-  padding: 0.15rem 0.5rem;
+  background: var(--tint-pink);
+  padding: 0.15rem 0.6rem;
+  border-radius: 20px;
 }
 
 .validateBtn {
   background: none;
   color: var(--success);
   border: 1px solid var(--success);
+  border-radius: 8px;
   padding: 0.35rem 0.9rem;
-  font-weight: 700;
-  font-family: 'Courier New', monospace;
-  font-size: 0.75rem;
-  letter-spacing: 2px;
-  text-transform: uppercase;
+  font-weight: 600;
+  font-family: inherit;
+  font-size: 0.775rem;
   cursor: pointer;
-  transition: background 0.1s, color 0.1s;
+  transition: background 0.15s, color 0.15s;
 }
 
 .validateBtn:hover {
   background: var(--success);
-  color: #000;
+  color: #fff;
 }
 
 .roleSelect {
   background: var(--bg-input);
   border: 1px solid var(--border);
+  border-radius: 6px;
   padding: 0.4rem 0.75rem;
   color: var(--text-muted);
   font-size: 0.8rem;
-  font-family: 'Courier New', monospace;
+  font-family: inherit;
   cursor: pointer;
   outline: none;
+  transition: border-color 0.15s;
 }
 
 .roleSelect:focus {

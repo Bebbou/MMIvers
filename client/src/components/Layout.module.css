@@ -6,8 +6,8 @@
 .sidebar {
   width: 240px;
   min-height: 100vh;
-  background: #0a0a0a;
-  border-right: 1px solid var(--accent);
+  background: var(--bg-card);
+  border-right: 1px solid var(--border);
   display: flex;
   flex-direction: column;
   padding: 1.5rem 1rem;
@@ -18,13 +18,13 @@
 }
 
 .logo {
-  font-size: 1.2rem;
-  font-weight: 700;
+  font-size: 1.1rem;
+  font-weight: 800;
   color: var(--accent);
-  letter-spacing: 4px;
-  text-transform: uppercase;
-  padding-left: 0.5rem;
-  border-left: 2px solid var(--accent);
+  padding: 0.5rem 0.75rem;
+  background: var(--tint-pink);
+  border-radius: 8px;
+  letter-spacing: -0.3px;
 }
 
 .userInfo {
@@ -33,51 +33,71 @@
   gap: 0.2rem;
   padding: 0.75rem;
   background: var(--bg-dark);
+  border-radius: 8px;
   border: 1px solid var(--border);
 }
 
 .userName {
-  font-weight: 700;
-  font-size: 0.85rem;
-  text-transform: uppercase;
-  letter-spacing: 2px;
+  font-weight: 600;
+  font-size: 0.875rem;
   color: var(--text-muted);
 }
 
 .userGroupe {
   font-size: 0.75rem;
   color: var(--accent);
-  letter-spacing: 1px;
+  font-weight: 500;
 }
 
 .nav {
   display: flex;
   flex-direction: column;
-  gap: 0.1rem;
+  gap: 0.15rem;
   flex: 1;
 }
 
 .navLink {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
+  gap: 0.65rem;
   padding: 0.6rem 0.75rem;
   color: var(--text-faint);
-  font-size: 0.85rem;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  transition: color 0.1s, border-left 0.1s;
-  border-left: 2px solid transparent;
+  font-size: 0.875rem;
+  border-radius: 8px;
+  transition: background 0.15s, color 0.15s;
 }
 
 .navLink:hover {
+  background: var(--bg-dark);
   color: var(--text-muted);
-  border-left: 2px solid var(--border);
 }
 
 .active {
+  background: var(--tint-pink);
   color: var(--accent);
-  border-left: 2px solid var(--accent);
+  font-weight: 600;
+}
+
+.themeBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background: none;
+  border: 1px solid var(--border);
+  color: var(--text-faint);
+  padding: 0.6rem;
+  font-size: 0.775rem;
+  font-family: inherit;
+  font-weight: 500;
+  border-radius: 8px;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+  cursor: pointer;
+}
+
+.themeBtn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
 }
 
 .canvasBtn {
@@ -86,20 +106,21 @@
   justify-content: center;
   gap: 0.5rem;
   background: none;
-  border: 1px solid var(--accent);
-  color: var(--accent);
+  border: 1px solid var(--border);
+  color: var(--text-faint);
   padding: 0.6rem;
-  font-size: 0.7rem;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  font-family: 'Courier New', monospace;
-  transition: background 0.1s, color 0.1s;
+  font-size: 0.8rem;
+  font-family: inherit;
+  border-radius: 8px;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
   cursor: pointer;
+  text-decoration: none;
 }
 
 .canvasBtn:hover, .canvasBtnActive {
   background: var(--accent);
-  color: #000;
+  border-color: var(--accent);
+  color: #fff;
 }
 
 .logout {
@@ -108,11 +129,10 @@
   color: var(--text-faint);
   padding: 0.6rem;
   cursor: pointer;
-  font-size: 0.7rem;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  font-family: 'Courier New', monospace;
-  transition: border-color 0.1s, color 0.1s;
+  font-size: 0.8rem;
+  font-family: inherit;
+  border-radius: 8px;
+  transition: border-color 0.15s, color 0.15s;
   display: flex;
   align-items: center;
   justify-content: center;

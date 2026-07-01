@@ -13,71 +13,71 @@
 }
 
 .header h1 {
-  font-size: 1rem;
+  font-size: 1.25rem;
   font-weight: 700;
-  letter-spacing: 6px;
-  text-transform: uppercase;
-  color: var(--text-muted);
-}
-
-.header h1::before {
-  content: "> ";
-  color: var(--accent);
+  color: var(--text);
+  letter-spacing: -0.3px;
 }
 
 .header button {
-  background: none;
-  color: var(--accent);
-  border: 1px solid var(--accent);
-  padding: 0.4rem 1rem;
-  font-size: 0.7rem;
-  font-family: 'Courier New', monospace;
-  letter-spacing: 2px;
-  text-transform: uppercase;
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 0.45rem 1.1rem;
+  font-size: 0.825rem;
+  font-family: inherit;
+  font-weight: 500;
   cursor: pointer;
-  transition: background 0.1s, color 0.1s;
+  transition: background 0.15s;
 }
 
 .header button:hover {
-  background: var(--accent);
-  color: #000;
+  background: var(--accent-hover);
 }
 
 .form {
   background: var(--bg-card);
   border: 1px solid var(--border);
+  border-radius: 12px;
   padding: 1.5rem;
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
 }
 
-.form input {
+.form input, .form textarea, .form select {
   background: var(--bg-input);
   border: 1px solid var(--border);
+  border-radius: 8px;
   padding: 0.65rem 1rem;
   color: var(--text);
-  font-size: 0.85rem;
-  font-family: 'Courier New', monospace;
+  font-size: 0.875rem;
+  font-family: inherit;
   outline: none;
+  transition: border-color 0.15s;
 }
 
-.form input:focus {
+.form input:focus, .form textarea:focus, .form select:focus {
   border-color: var(--accent);
 }
 
 .form button {
   background: var(--accent);
-  color: #000;
+  color: #fff;
   border: none;
-  font-weight: 700;
-  font-family: 'Courier New', monospace;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  font-size: 0.75rem;
+  border-radius: 8px;
+  font-weight: 600;
+  font-family: inherit;
+  font-size: 0.825rem;
   cursor: pointer;
   align-self: flex-end;
   padding: 0.5rem 1.5rem;
+  transition: background 0.15s;
+}
+
+.form button:hover {
+  background: var(--accent-hover);
 }
 
 .list {
@@ -88,25 +88,24 @@
 
 .empty {
   color: var(--text-faint);
-  font-size: 0.8rem;
-  letter-spacing: 2px;
+  font-size: 0.875rem;
+  text-align: center;
+  padding: 2rem 0;
 }
-
-.empty::before { content: "// "; }
 
 .card {
   background: var(--bg-card);
   border: 1px solid var(--border);
-  border-left: 2px solid var(--accent);
+  border-radius: 10px;
   padding: 1rem 1.25rem;
   display: flex;
   flex-direction: column;
   gap: 0.4rem;
-  transition: border-color 0.1s;
+  transition: box-shadow 0.15s;
 }
 
 .card:hover {
-  border-color: var(--accent);
+  box-shadow: 0 2px 12px rgba(0,0,0,0.07);
 }
 
 .cardHeader {
@@ -117,27 +116,28 @@
 
 .matiere {
   color: var(--accent);
-  font-size: 0.7rem;
+  font-size: 0.75rem;
   font-weight: 700;
-  letter-spacing: 2px;
-  text-transform: uppercase;
+  background: var(--tint-pink);
+  padding: 0.15rem 0.6rem;
+  border-radius: 20px;
 }
 
 .date {
-  color: var(--text-faint);
-  font-size: 0.75rem;
+  color: var(--accent-orange);
+  font-size: 0.775rem;
+  font-weight: 500;
 }
 
 .card h3 {
-  font-size: 0.9rem;
+  font-size: 0.925rem;
   font-weight: 600;
-  letter-spacing: 1px;
   color: var(--text-muted);
 }
 
 .card p {
   color: var(--text-faint);
-  font-size: 0.8rem;
+  font-size: 0.825rem;
 }
 
 .cardFooter {
@@ -148,24 +148,23 @@
 }
 
 .auteur {
-  font-size: 0.7rem;
+  font-size: 0.75rem;
   color: var(--text-faint);
 }
 
-.auteur::before { content: "~ "; }
-
 .deleteBtn {
   background: none;
-  border: 1px solid var(--danger);
-  color: var(--danger);
+  border: 1px solid var(--border);
+  color: var(--text-faint);
   padding: 0.2rem 0.6rem;
-  font-size: 0.7rem;
-  font-family: 'Courier New', monospace;
-  letter-spacing: 1px;
+  font-size: 0.775rem;
+  font-family: inherit;
+  border-radius: 6px;
   cursor: pointer;
+  transition: border-color 0.15s, color 0.15s;
 }
 
 .deleteBtn:hover {
-  background: var(--danger);
-  color: #000;
+  border-color: var(--danger);
+  color: var(--danger);
 }

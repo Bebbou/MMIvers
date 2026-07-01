@@ -1,6 +1,7 @@
 import { NavLink, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
-import { Home, BookOpen, BarChart2, Calendar, User, Settings, LogOut, LayoutGrid } from "lucide-react";
+import { Home, BookOpen, BarChart2, Calendar, User, Settings, LogOut, LayoutGrid, Sun, Moon } from "lucide-react";
+import { useTheme } from "../hooks/useTheme";
 import styles from "./Layout.module.css";
 
 const navItems = [
@@ -14,6 +15,7 @@ const navItems = [
 export default function Layout({ children }) {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
+  const { theme, toggleTheme } = useTheme();
 
   function handleLogout() {
     logout();
@@ -53,6 +55,10 @@ export default function Layout({ children }) {
             </NavLink>
           )}
         </nav>
+        <button className={styles.themeBtn} onClick={toggleTheme} title={theme === "light" ? "Mode sombre" : "Mode clair"}>
+          {theme === "light" ? <Moon size={13} strokeWidth={1.5} /> : <Sun size={13} strokeWidth={1.5} />}
+          {theme === "light" ? "Mode sombre" : "Mode clair"}
+        </button>
         <NavLink
           to="/canvas"
           className={({ isActive }) =>

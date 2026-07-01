@@ -5,22 +5,15 @@
 }
 
 .page h1 {
-  font-size: 1rem;
+  font-size: 1.25rem;
   font-weight: 700;
-  letter-spacing: 6px;
-  text-transform: uppercase;
-  color: var(--text-muted);
-}
-
-.page h1::before {
-  content: "> ";
-  color: var(--accent);
+  color: var(--text);
+  letter-spacing: -0.3px;
 }
 
 .subtitle {
   color: var(--text-faint);
-  font-size: 0.75rem;
-  letter-spacing: 2px;
+  font-size: 0.875rem;
   margin-top: -1rem;
 }
 
@@ -28,32 +21,31 @@
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
   gap: 1rem;
-  margin-top: 1rem;
+  margin-top: 0.5rem;
 }
 
 .card {
   background: var(--bg-card);
   border: 1px solid var(--border);
-  border-left: 2px solid var(--accent);
+  border-radius: 12px;
   padding: 1.5rem;
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
-  font-size: 0.8rem;
+  font-size: 0.875rem;
   color: var(--text-faint);
-  letter-spacing: 1px;
-  text-transform: uppercase;
   cursor: pointer;
-  transition: border-color 0.1s, color 0.1s;
+  transition: box-shadow 0.15s, border-color 0.15s;
+  text-decoration: none;
 }
 
 .card:hover {
-  color: var(--text-muted);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.08);
   border-color: var(--accent);
 }
 
 .card span {
   color: var(--accent);
-  font-size: 0.7rem;
-  letter-spacing: 3px;
+  font-size: 0.75rem;
+  font-weight: 600;
 }

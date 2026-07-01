@@ -8,46 +8,27 @@
 .card {
   background: var(--bg-card);
   border: 1px solid var(--border);
+  border-radius: 16px;
   padding: 2.5rem;
   width: 100%;
   max-width: 400px;
   display: flex;
   flex-direction: column;
   gap: 1.25rem;
-  position: relative;
-}
-
-/* Coin accent en haut à gauche */
-.card::before {
-  content: "";
-  position: absolute;
-  top: -1px;
-  left: -1px;
-  width: 40px;
-  height: 40px;
-  border-top: 2px solid var(--accent);
-  border-left: 2px solid var(--accent);
+  box-shadow: 0 4px 24px rgba(0,0,0,0.06);
 }
 
 .card h1 {
-  font-size: 1.5rem;
+  font-size: 1.75rem;
   font-weight: 700;
   color: var(--accent);
-  letter-spacing: 6px;
-  text-transform: uppercase;
+  letter-spacing: -0.5px;
 }
 
 .subtitle {
   color: var(--text-faint);
-  font-size: 0.75rem;
-  letter-spacing: 2px;
-  text-transform: uppercase;
+  font-size: 0.875rem;
   margin-top: -0.75rem;
-}
-
-.subtitle::before {
-  content: "> ";
-  color: var(--accent);
 }
 
 .card form {
@@ -60,12 +41,13 @@
 .card input {
   background: var(--bg-input);
   border: 1px solid var(--border);
+  border-radius: 8px;
   padding: 0.75rem 1rem;
   color: var(--text);
-  font-size: 0.85rem;
-  font-family: 'Courier New', monospace;
+  font-size: 0.875rem;
+  font-family: inherit;
   outline: none;
-  letter-spacing: 1px;
+  transition: border-color 0.15s;
 }
 
 .card select:focus,
@@ -77,15 +59,14 @@
   background: var(--accent);
   color: #fff;
   border: none;
+  border-radius: 8px;
   padding: 0.75rem;
-  font-size: 0.8rem;
-  font-weight: 700;
-  font-family: 'Courier New', monospace;
-  letter-spacing: 3px;
-  text-transform: uppercase;
+  font-size: 0.875rem;
+  font-weight: 600;
+  font-family: inherit;
   cursor: pointer;
   margin-top: 0.5rem;
-  transition: background 0.1s;
+  transition: background 0.15s;
 }
 
 .card button:hover {
@@ -95,8 +76,8 @@
 .card a {
   text-align: center;
   color: var(--text-faint);
-  font-size: 0.75rem;
-  letter-spacing: 1px;
+  font-size: 0.8rem;
+  transition: color 0.15s;
 }
 
 .card a:hover {
@@ -106,9 +87,8 @@
 .error {
   color: var(--danger);
   font-size: 0.8rem;
-  letter-spacing: 1px;
-}
-
-.error::before {
-  content: "[ERR] ";
+  background: #FEF2F2;
+  border: 1px solid #FECACA;
+  border-radius: 6px;
+  padding: 0.5rem 0.75rem;
 }

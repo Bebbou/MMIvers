@@ -1,16 +1,49 @@
-:root {
-  --bg-dark: #0d0d0d;
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap');
+
+:root, [data-theme="light"] {
+  --bg-page: #F7F6F3;
+  --bg-card: #FFFFFF;
+  --bg-input: #F2F1EE;
+  --bg-dark: #F7F6F3;
+  --border: #E4E2DD;
+  --accent: #fe7db6;
+  --accent-hover: #e05a9a;
+  --accent-blue: #29ABE2;
+  --accent-orange: #F26419;
+  --tint-pink: #FFF0F7;
+  --tint-blue: #EBF7FD;
+  --tint-orange: #FFF3EE;
+  --text: #1A1A1A;
+  --text-muted: #3D3D3D;
+  --text-faint: #888888;
+  --danger: #DC2626;
+  --success: #16A34A;
+  --warning: #F26419;
+  --shadow: 0 4px 16px rgba(0,0,0,0.07);
+  --shadow-sm: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+[data-theme="dark"] {
+  --bg-page: #0d0d0d;
   --bg-card: #111111;
   --bg-input: #0a0a0a;
-  --border: #333333;
-  --accent: #ff0055;
-  --accent-hover: #cc0044;
+  --bg-dark: #0d0d0d;
+  --border: #2a2a2a;
+  --accent: #fe7db6;
+  --accent-hover: #e05a9a;
+  --accent-blue: #29ABE2;
+  --accent-orange: #F26419;
+  --tint-pink: #2a0f1a;
+  --tint-blue: #0a1e2a;
+  --tint-orange: #2a1205;
   --text: #e0e0e0;
   --text-muted: #c1b492;
   --text-faint: #555555;
-  --danger: #ff0055;
-  --success: #00ff41;
+  --danger: #ff4d4d;
+  --success: #00c136;
   --warning: #f59e0b;
+  --shadow: 0 4px 16px rgba(0,0,0,0.5);
+  --shadow-sm: 0 2px 8px rgba(0,0,0,0.4);
 }
 
 * {
@@ -20,20 +53,23 @@
 }
 
 body {
-  font-family: 'Courier New', Courier, monospace;
-  background: var(--bg-dark);
+  font-family: 'Montserrat', -apple-system, system-ui, sans-serif;
+  background: var(--bg-page);
   color: var(--text);
   min-height: 100vh;
+  transition: background 0.2s, color 0.2s;
+}
+
+[data-theme="dark"] body {
   background-image: radial-gradient(circle, #1a1a1a 1px, transparent 1px);
   background-size: 30px 30px;
 }
 
-/* Effet scanlines CRT léger */
-body::before {
+[data-theme="dark"] body::before {
   content: " ";
   position: fixed;
   top: 0; left: 0; bottom: 0; right: 0;
-  background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.06) 50%);
+  background: linear-gradient(rgba(18,16,16,0) 50%, rgba(0,0,0,0.05) 50%);
   background-size: 100% 6px;
   z-index: 9999;
   pointer-events: none;
@@ -44,7 +80,6 @@ a {
   text-decoration: none;
 }
 
-/* Scrollbar style terminal */
 ::-webkit-scrollbar { width: 4px; }
-::-webkit-scrollbar-track { background: var(--bg-dark); }
-::-webkit-scrollbar-thumb { background: var(--accent); }
+::-webkit-scrollbar-track { background: var(--bg-page); }
+::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 4px; }
