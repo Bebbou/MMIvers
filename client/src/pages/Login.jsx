@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import api from "../api/index.js";
+import PasswordInput from "../components/PasswordInput";
 import styles from "./Login.module.css";
 
 export default function Login() {
@@ -40,9 +41,8 @@ export default function Login() {
             onChange={handleChange}
             required
           />
-          <input
+          <PasswordInput
             name="password"
-            type="password"
             placeholder="Mot de passe"
             value={form.password}
             onChange={handleChange}
