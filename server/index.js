@@ -101,6 +101,10 @@ async function seedChannels() {
 
 const PORT = process.env.PORT ?? 3000;
 httpServer.listen(PORT, async () => {
-  await seedChannels();
   console.log(`Serveur démarré sur http://localhost:${PORT}`);
+  try {
+    await seedChannels();
+  } catch (e) {
+    console.warn("seedChannels ignoré (tables pas encore créées) :", e.message);
+  }
 });
