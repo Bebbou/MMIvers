@@ -234,6 +234,28 @@
   padding-left: 0.25rem;
 }
 
+.msgAuteurMe {
+  text-align: right;
+  padding-left: 0;
+  padding-right: 0.25rem;
+  color: var(--text-faint);
+}
+
+.deleteMsgBtn {
+  background: none;
+  border: none;
+  color: var(--text-faint);
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  opacity: 0;
+  flex-shrink: 0;
+  transition: opacity 0.15s, color 0.15s;
+}
+
+.msgBubble:hover .deleteMsgBtn { opacity: 1; }
+.deleteMsgBtn:hover { color: var(--danger); }
+
 .msgBubble {
   background: var(--bg-card);
   border: 1px solid var(--border);

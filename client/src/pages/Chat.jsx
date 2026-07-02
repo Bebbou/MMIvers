@@ -59,22 +59,41 @@ export default function Chat() {
   useEffect(() => {
     if (!socket) return;
     socket.on("nouveauMessage", (msg) => {
-      if (msg.channelId === activeChannelRef.current) {
+      // eslint-disable-next-line eqeqeq
+      if (msg.channelId === activeChannelRef.current && msg.auteur.id != user?.id) {
         setMessages(prev => [...prev, msg]);
       }
     });
-    return () => socket.off("nouveauMessage");
-  }, [socket]);
+    socket.on("messageSupprime", ({ id }) => {
+      setMessages(prev => prev.filter(m => m.id !== id));
+    });
+    return () => {
+      socket.off("nouveauMessage");
+      socket.off("messageSupprime");
+    };
+  }, [socket, user]);
 
   // Scroll automatique vers le bas
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
+  async function handleDeleteMessage(msgId) {
+    await api.delete(`/chat/messages/${msgId}`);
+  }
+
   function handleSend(e) {
     e.preventDefault();
     if (!input.trim() || !activeChannel) return;
-    socket?.emit("envoyerMessage", { channelId: activeChannel.id, content: input });
+    const content = input.trim();
+    setMessages(prev => [...prev, {
+      id: `tmp-${Date.now()}`,
+      content,
+      createdAt: new Date().toISOString(),
+      channelId: activeChannel.id,
+      auteur: { id: user.id, nom: user.nom },
+    }]);
+    socket?.emit("envoyerMessage", { channelId: activeChannel.id, content });
     setInput("");
   }
 
@@ -171,7 +190,8 @@ export default function Chat() {
                   <p className={styles.empty}>Aucun message pour l'instant. Sois le premier !</p>
                 )}
                 {messages.map((msg, i) => {
-                  const isMe = msg.auteur.id === user?.id;
+                  // eslint-disable-next-line eqeqeq
+                  const isMe = msg.auteur.id == user?.id;
                   const showDate = i === 0 || formatDate(msg.createdAt) !== formatDate(messages[i - 1].createdAt);
                   return (
                     <div key={msg.id}>
@@ -179,10 +199,17 @@ export default function Chat() {
                         <div className={styles.dateSeparator}>{formatDate(msg.createdAt)}</div>
                       )}
                       <div className={`${styles.message} ${isMe ? styles.messageMe : ""}`}>
-                        {!isMe && <span className={styles.msgAuteur}>{msg.auteur.nom}</span>}
+                        <span className={`${styles.msgAuteur} ${isMe ? styles.msgAuteurMe : ""}`}>
+                          {isMe ? "Vous" : msg.auteur.nom}
+                        </span>
                         <div className={styles.msgBubble}>
                           <span>{msg.content}</span>
                           <span className={styles.msgTime}>{formatTime(msg.createdAt)}</span>
+                          {user?.role === "admin" && (
+                            <button className={styles.deleteMsgBtn} onClick={() => handleDeleteMessage(msg.id)}>
+                              <Trash2 size={11} strokeWidth={1.5} />
+                            </button>
+                          )}
                         </div>
                       </div>
                     </div>
