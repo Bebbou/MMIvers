@@ -5,13 +5,38 @@ import { requireAuth, requireRole } from "../middlewares/auth.js";
 const router = Router();
 router.use(requireAuth);
 
-// GET /chat/channels — liste tous les canaux accessibles
+const PAGE_SIZE = 50;
+
+const msgInclude = {
+  auteur: { select: { id: true, nom: true } },
+  reactions: { include: { user: { select: { id: true, nom: true } } } },
+  replyTo: {
+    select: {
+      id: true,
+      content: true,
+      auteur: { select: { id: true, nom: true } },
+    },
+  },
+};
+
+// GET /chat/channels
 router.get("/channels", async (req, res) => {
-  const channels = await prisma.channel.findMany({ orderBy: { createdAt: "asc" } });
+  if (req.user.role === "admin") {
+    const channels = await prisma.channel.findMany({ orderBy: { createdAt: "asc" } });
+    return res.json(channels);
+  }
+  const userGroupe = await prisma.groupe.findUnique({
+    where: { id: req.user.groupeId },
+    select: { nom: true },
+  });
+  const channels = await prisma.channel.findMany({
+    where: { OR: [{ type: "general" }, { type: "custom" }, { type: "groupe", nom: userGroupe.nom }] },
+    orderBy: { createdAt: "asc" },
+  });
   res.json(channels);
 });
 
-// POST /chat/channels — créer un canal (admin seulement)
+// POST /chat/channels (admin)
 router.post("/channels", requireRole("admin"), async (req, res) => {
   const { nom, description } = req.body;
   if (!nom) return res.status(400).json({ error: "Nom requis." });
@@ -22,7 +47,7 @@ router.post("/channels", requireRole("admin"), async (req, res) => {
   res.status(201).json(channel);
 });
 
-// DELETE /chat/channels/:id — supprimer un canal custom (admin seulement)
+// DELETE /chat/channels/:id (admin)
 router.delete("/channels/:id", requireRole("admin"), async (req, res) => {
   const channel = await prisma.channel.findUnique({ where: { id: Number(req.params.id) } });
   if (!channel) return res.status(404).json({ error: "Canal introuvable." });
@@ -32,24 +57,80 @@ router.delete("/channels/:id", requireRole("admin"), async (req, res) => {
   res.json({ message: "Canal supprimé." });
 });
 
-// GET /chat/channels/:id/messages — 50 derniers messages d'un canal
+// GET /chat/channels/:id/messages?before=:id
 router.get("/channels/:id/messages", async (req, res) => {
+  const channelId = Number(req.params.id);
+  const before = req.query.before ? Number(req.query.before) : undefined;
+
   const messages = await prisma.message.findMany({
-    where: { channelId: Number(req.params.id) },
-    include: { auteur: { select: { id: true, nom: true } } },
-    orderBy: { createdAt: "asc" },
-    take: 50,
+    where: { channelId, ...(before ? { id: { lt: before } } : {}) },
+    include: msgInclude,
+    orderBy: { id: "desc" },
+    take: PAGE_SIZE + 1,
   });
-  res.json(messages);
+
+  const hasMore = messages.length > PAGE_SIZE;
+  res.json({ messages: messages.slice(0, PAGE_SIZE).reverse(), hasMore });
 });
 
-// DELETE /chat/messages/:id — supprimer un message (admin seulement)
+// DELETE /chat/messages/:id (admin)
 router.delete("/messages/:id", requireRole("admin"), async (req, res) => {
   const message = await prisma.message.findUnique({ where: { id: Number(req.params.id) } });
   if (!message) return res.status(404).json({ error: "Message introuvable." });
   await prisma.message.delete({ where: { id: message.id } });
-  req.io.to(`channel-${message.channelId}`).emit("messageSupprime", { id: message.id, channelId: message.channelId });
+  req.io.to(`channel-${message.channelId}`).emit("messageSupprime", { id: message.id });
   res.json({ message: "Message supprimé." });
+});
+
+// PATCH /chat/messages/:id (auteur ou admin)
+router.patch("/messages/:id", async (req, res) => {
+  const { content } = req.body;
+  if (!content?.trim()) return res.status(400).json({ error: "Contenu requis." });
+  const message = await prisma.message.findUnique({ where: { id: Number(req.params.id) } });
+  if (!message) return res.status(404).json({ error: "Message introuvable." });
+  // eslint-disable-next-line eqeqeq
+  if (message.auteurId != req.user.id && req.user.role !== "admin") {
+    return res.status(403).json({ error: "Interdit." });
+  }
+  const updated = await prisma.message.update({
+    where: { id: message.id },
+    data: { content: content.trim(), editedAt: new Date() },
+  });
+  req.io.to(`channel-${message.channelId}`).emit("messageModifie", {
+    id: updated.id,
+    content: updated.content,
+    editedAt: updated.editedAt,
+    channelId: updated.channelId,
+  });
+  res.json(updated);
+});
+
+// POST /chat/messages/:id/reactions (toggle)
+router.post("/messages/:id/reactions", async (req, res) => {
+  const { emoji } = req.body;
+  const messageId = Number(req.params.id);
+  const userId = req.user.id;
+
+  const message = await prisma.message.findUnique({ where: { id: messageId } });
+  if (!message) return res.status(404).json({ error: "Message introuvable." });
+
+  const existing = await prisma.reaction.findUnique({
+    where: { userId_messageId_emoji: { userId, messageId, emoji } },
+  });
+
+  if (existing) {
+    await prisma.reaction.delete({ where: { id: existing.id } });
+  } else {
+    await prisma.reaction.create({ data: { emoji, userId, messageId } });
+  }
+
+  const reactions = await prisma.reaction.findMany({
+    where: { messageId },
+    include: { user: { select: { id: true, nom: true } } },
+  });
+
+  req.io.to(`channel-${message.channelId}`).emit("reactionMaj", { messageId, reactions });
+  res.json({ reactions });
 });
 
 export default router;

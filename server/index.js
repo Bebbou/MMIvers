@@ -67,15 +67,39 @@ io.on("connection", (socket) => {
     socket.leave(`channel-${channelId}`);
   });
 
-  socket.on("envoyerMessage", async ({ channelId, content }) => {
+  socket.on("envoyerMessage", async ({ channelId, content, replyToId }) => {
     if (!content?.trim() || !channelId) return;
     try {
       const message = await prisma.message.create({
-        data: { content: content.trim(), channelId, auteurId: socket.user.id },
-        include: { auteur: { select: { id: true, nom: true } } },
+        data: {
+          content: content.trim(),
+          channelId,
+          auteurId: socket.user.id,
+          ...(replyToId ? { replyToId } : {}),
+        },
+        include: {
+          auteur: { select: { id: true, nom: true } },
+          reactions: { include: { user: { select: { id: true, nom: true } } } },
+          replyTo: { select: { id: true, content: true, auteur: { select: { id: true, nom: true } } } },
+        },
       });
       io.to(`channel-${channelId}`).emit("nouveauMessage", message);
     } catch {}
+  });
+
+  socket.on("startTyping", ({ channelId, nom }) => {
+    socket.to(`channel-${channelId}`).emit("userTyping", {
+      userId: socket.user.id,
+      nom,
+      channelId,
+    });
+  });
+
+  socket.on("stopTyping", ({ channelId }) => {
+    socket.to(`channel-${channelId}`).emit("userStopTyping", {
+      userId: socket.user.id,
+      channelId,
+    });
   });
 
   socket.on("disconnect", () => {});

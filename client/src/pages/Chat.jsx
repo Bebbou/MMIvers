@@ -1,101 +1,51 @@
 import { useState, useEffect, useRef } from "react";
-import { useAuth } from "../context/AuthContext";
-import { useSocket } from "../hooks/useSocket";
+import { useChatChannel } from "../hooks/useChatChannel";
 import Layout from "../components/Layout";
 import api from "../api/index.js";
-import { Hash, Plus, Trash2, Send } from "lucide-react";
+import { Hash, Plus, Trash2, Send, X, Pencil, Reply, SmilePlus, ChevronUp } from "lucide-react";
 import styles from "./Chat.module.css";
 
+const EMOJIS = ["👍", "❤️", "😂", "😮", "😢", "🎉"];
+
 export default function Chat() {
-  const { user } = useAuth();
-  const socket = useSocket();
-  const [channels, setChannels] = useState([]);
-  const [activeChannel, setActiveChannel] = useState(null);
-  const [messages, setMessages] = useState([]);
-  const [input, setInput] = useState("");
+  const {
+    user, channels, setChannels,
+    activeChannel, setActiveChannel,
+    messages, hasMore, loadMore, loadingMore,
+    input, setInput,
+    typingLabel,
+    unreadByChannel,
+    editingId, setEditingId, editInput, setEditInput,
+    replyingTo, setReplyingTo,
+    handleSend, handleDeleteMessage, handleEditMessage, handleReaction,
+    formatTime, formatDate,
+  } = useChatChannel();
+
   const [newChannelForm, setNewChannelForm] = useState(false);
   const [newChannelNom, setNewChannelNom] = useState("");
   const [newChannelDesc, setNewChannelDesc] = useState("");
-  const bottomRef = useRef(null);
-  const activeChannelRef = useRef(null);
+  const [emojiPickerFor, setEmojiPickerFor] = useState(null);
 
-  // Chargement des canaux
+  const bottomRef = useRef(null);
+  const messagesRef = useRef(null);
+  const isAtBottomRef = useRef(true);
+
+  // Smart scroll
   useEffect(() => {
-    api.get("/chat/channels").then(res => {
-      setChannels(res.data);
-      if (res.data.length > 0) setActiveChannel(res.data[0]);
-    });
+    const el = messagesRef.current;
+    if (!el) return;
+    const onScroll = () => {
+      isAtBottomRef.current = el.scrollHeight - el.scrollTop - el.clientHeight < 80;
+    };
+    el.addEventListener("scroll", onScroll);
+    return () => el.removeEventListener("scroll", onScroll);
   }, []);
 
-  // Écoute Socket.IO pour les nouveaux canaux
   useEffect(() => {
-    if (!socket) return;
-    socket.on("nouveauChannel", (channel) => setChannels(prev => [...prev, channel]));
-    socket.on("channelSupprime", ({ id }) => {
-      setChannels(prev => prev.filter(c => c.id !== id));
-      setActiveChannel(prev => prev?.id === id ? null : prev);
-    });
-    return () => {
-      socket.off("nouveauChannel");
-      socket.off("channelSupprime");
-    };
-  }, [socket]);
-
-  // Chargement des messages + rejoindre la room socket quand on change de canal
-  useEffect(() => {
-    if (!activeChannel) return;
-
-    // Quitter l'ancien canal
-    if (activeChannelRef.current && activeChannelRef.current !== activeChannel.id) {
-      socket?.emit("quitterChannel", activeChannelRef.current);
+    if (isAtBottomRef.current) {
+      bottomRef.current?.scrollIntoView({ behavior: "smooth" });
     }
-    activeChannelRef.current = activeChannel.id;
-
-    api.get(`/chat/channels/${activeChannel.id}/messages`).then(res => setMessages(res.data));
-    socket?.emit("rejoindreChannel", activeChannel.id);
-  }, [activeChannel, socket]);
-
-  // Réception des nouveaux messages en temps réel
-  useEffect(() => {
-    if (!socket) return;
-    socket.on("nouveauMessage", (msg) => {
-      // eslint-disable-next-line eqeqeq
-      if (msg.channelId === activeChannelRef.current && msg.auteur.id != user?.id) {
-        setMessages(prev => [...prev, msg]);
-      }
-    });
-    socket.on("messageSupprime", ({ id }) => {
-      setMessages(prev => prev.filter(m => m.id !== id));
-    });
-    return () => {
-      socket.off("nouveauMessage");
-      socket.off("messageSupprime");
-    };
-  }, [socket, user]);
-
-  // Scroll automatique vers le bas
-  useEffect(() => {
-    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
-
-  async function handleDeleteMessage(msgId) {
-    await api.delete(`/chat/messages/${msgId}`);
-  }
-
-  function handleSend(e) {
-    e.preventDefault();
-    if (!input.trim() || !activeChannel) return;
-    const content = input.trim();
-    setMessages(prev => [...prev, {
-      id: `tmp-${Date.now()}`,
-      content,
-      createdAt: new Date().toISOString(),
-      channelId: activeChannel.id,
-      auteur: { id: user.id, nom: user.nom },
-    }]);
-    socket?.emit("envoyerMessage", { channelId: activeChannel.id, content });
-    setInput("");
-  }
 
   async function handleCreateChannel(e) {
     e.preventDefault();
@@ -111,23 +61,24 @@ export default function Chat() {
     await api.delete(`/chat/channels/${channel.id}`);
   }
 
-  function formatTime(date) {
-    return new Date(date).toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" });
-  }
-
-  function formatDate(date) {
-    return new Date(date).toLocaleDateString("fr-FR", { day: "numeric", month: "long" });
+  function getReactionMap(reactions) {
+    const map = {};
+    for (const r of reactions) {
+      if (!map[r.emoji]) map[r.emoji] = [];
+      map[r.emoji].push(r.user);
+    }
+    return map;
   }
 
   return (
     <Layout>
       <div className={styles.page}>
-        {/* Sidebar canaux */}
+        {/* Sidebar */}
         <aside className={styles.sidebar}>
           <div className={styles.sidebarHeader}>
             <span className={styles.sidebarTitle}>Canaux</span>
             {user?.role === "admin" && (
-              <button className={styles.addBtn} onClick={() => setNewChannelForm(v => !v)} title="Créer un canal">
+              <button className={styles.addBtn} onClick={() => setNewChannelForm(v => !v)}>
                 <Plus size={14} strokeWidth={2} />
               </button>
             )}
@@ -135,17 +86,8 @@ export default function Chat() {
 
           {newChannelForm && (
             <form className={styles.newChannelForm} onSubmit={handleCreateChannel}>
-              <input
-                placeholder="Nom du canal"
-                value={newChannelNom}
-                onChange={e => setNewChannelNom(e.target.value)}
-                required
-              />
-              <input
-                placeholder="Description (optionnel)"
-                value={newChannelDesc}
-                onChange={e => setNewChannelDesc(e.target.value)}
-              />
+              <input placeholder="Nom du canal" value={newChannelNom} onChange={e => setNewChannelNom(e.target.value)} required />
+              <input placeholder="Description (optionnel)" value={newChannelDesc} onChange={e => setNewChannelDesc(e.target.value)} />
               <button type="submit">Créer</button>
             </form>
           )}
@@ -159,12 +101,12 @@ export default function Chat() {
               >
                 <Hash size={13} strokeWidth={1.5} />
                 <span>{c.nom}</span>
+                {(unreadByChannel[c.id] || 0) > 0 && activeChannel?.id !== c.id && (
+                  <span className={styles.channelBadge}>{unreadByChannel[c.id]}</span>
+                )}
                 {user?.role === "admin" && c.type === "custom" && (
-                  <button
-                    className={styles.deleteChannelBtn}
-                    onClick={e => { e.stopPropagation(); handleDeleteChannel(c); }}
-                    title="Supprimer"
-                  >
+                  <button className={styles.deleteChannelBtn}
+                    onClick={e => { e.stopPropagation(); handleDeleteChannel(c); }}>
                     <Trash2 size={11} strokeWidth={1.5} />
                   </button>
                 )}
@@ -173,7 +115,7 @@ export default function Chat() {
           </div>
         </aside>
 
-        {/* Zone de messages */}
+        {/* Zone messages */}
         <div className={styles.chatArea}>
           {activeChannel ? (
             <>
@@ -185,7 +127,13 @@ export default function Chat() {
                 )}
               </div>
 
-              <div className={styles.messages}>
+              <div className={styles.messages} ref={messagesRef}>
+                {hasMore && (
+                  <button className={styles.loadMoreBtn} onClick={loadMore} disabled={loadingMore}>
+                    <ChevronUp size={14} strokeWidth={1.5} />
+                    {loadingMore ? "Chargement…" : "Messages précédents"}
+                  </button>
+                )}
                 {messages.length === 0 && (
                   <p className={styles.empty}>Aucun message pour l'instant. Sois le premier !</p>
                 )}
@@ -193,30 +141,109 @@ export default function Chat() {
                   // eslint-disable-next-line eqeqeq
                   const isMe = msg.auteur.id == user?.id;
                   const showDate = i === 0 || formatDate(msg.createdAt) !== formatDate(messages[i - 1].createdAt);
+                  const reactionMap = getReactionMap(msg.reactions || []);
+
                   return (
                     <div key={msg.id}>
-                      {showDate && (
-                        <div className={styles.dateSeparator}>{formatDate(msg.createdAt)}</div>
-                      )}
-                      <div className={`${styles.message} ${isMe ? styles.messageMe : ""}`}>
+                      {showDate && <div className={styles.dateSeparator}>{formatDate(msg.createdAt)}</div>}
+                      <div
+                        className={`${styles.message} ${isMe ? styles.messageMe : ""}`}
+                        onMouseLeave={() => setEmojiPickerFor(null)}
+                      >
                         <span className={`${styles.msgAuteur} ${isMe ? styles.msgAuteurMe : ""}`}>
                           {isMe ? "Vous" : msg.auteur.nom}
                         </span>
-                        <div className={styles.msgBubble}>
-                          <span>{msg.content}</span>
-                          <span className={styles.msgTime}>{formatTime(msg.createdAt)}</span>
-                          {user?.role === "admin" && (
-                            <button className={styles.deleteMsgBtn} onClick={() => handleDeleteMessage(msg.id)}>
-                              <Trash2 size={11} strokeWidth={1.5} />
-                            </button>
-                          )}
-                        </div>
+
+                        {/* Citation réponse */}
+                        {msg.replyTo && (
+                          <div className={styles.replyQuote}>
+                            <span className={styles.replyQuoteAuteur}>{msg.replyTo.auteur.nom}</span>
+                            <span className={styles.replyQuoteContent}>{msg.replyTo.content}</span>
+                          </div>
+                        )}
+
+                        {/* Édition inline */}
+                        {editingId === msg.id ? (
+                          <form className={styles.editForm} onSubmit={handleEditMessage}>
+                            <input value={editInput} onChange={e => setEditInput(e.target.value)} autoFocus />
+                            <button type="submit"><Send size={13} strokeWidth={1.5} /></button>
+                            <button type="button" onClick={() => setEditingId(null)}><X size={13} strokeWidth={1.5} /></button>
+                          </form>
+                        ) : (
+                          <div className={styles.msgBubble}>
+                            <span>{msg.content}</span>
+                            {msg.editedAt && <span className={styles.editedLabel}>(modifié)</span>}
+                            <span className={styles.msgTime}>{formatTime(msg.createdAt)}</span>
+                            <div className={styles.msgActions}>
+                              <button className={styles.actionBtn} title="Réagir"
+                                onClick={() => setEmojiPickerFor(prev => prev === msg.id ? null : msg.id)}>
+                                <SmilePlus size={13} strokeWidth={1.5} />
+                              </button>
+                              <button className={styles.actionBtn} title="Répondre"
+                                onClick={() => setReplyingTo(msg)}>
+                                <Reply size={13} strokeWidth={1.5} />
+                              </button>
+                              {isMe && (
+                                <button className={styles.actionBtn} title="Modifier"
+                                  onClick={() => { setEditingId(msg.id); setEditInput(msg.content); }}>
+                                  <Pencil size={13} strokeWidth={1.5} />
+                                </button>
+                              )}
+                              {user?.role === "admin" && (
+                                <button className={styles.actionBtn} title="Supprimer"
+                                  onClick={() => handleDeleteMessage(msg.id)}>
+                                  <Trash2 size={13} strokeWidth={1.5} />
+                                </button>
+                              )}
+                            </div>
+                          </div>
+                        )}
+
+                        {/* Picker emoji */}
+                        {emojiPickerFor === msg.id && (
+                          <div className={styles.emojiPicker}>
+                            {EMOJIS.map(emoji => (
+                              <button key={emoji} className={styles.emojiBtn}
+                                onClick={() => { handleReaction(msg.id, emoji); setEmojiPickerFor(null); }}>
+                                {emoji}
+                              </button>
+                            ))}
+                          </div>
+                        )}
+
+                        {/* Réactions */}
+                        {Object.keys(reactionMap).length > 0 && (
+                          <div className={styles.reactions}>
+                            {Object.entries(reactionMap).map(([emoji, users]) => {
+                              // eslint-disable-next-line eqeqeq
+                              const iMine = users.some(u => u.id == user?.id);
+                              return (
+                                <button key={emoji}
+                                  className={`${styles.reaction} ${iMine ? styles.reactionMine : ""}`}
+                                  onClick={() => handleReaction(msg.id, emoji)}
+                                  title={users.map(u => u.nom).join(", ")}>
+                                  {emoji} {users.length}
+                                </button>
+                              );
+                            })}
+                          </div>
+                        )}
                       </div>
                     </div>
                   );
                 })}
                 <div ref={bottomRef} />
               </div>
+
+              {typingLabel && <div className={styles.typingIndicator}>{typingLabel}</div>}
+
+              {replyingTo && (
+                <div className={styles.replyBar}>
+                  <Reply size={13} strokeWidth={1.5} />
+                  <span>Répondre à <strong>{replyingTo.auteur.nom}</strong> : {replyingTo.content.slice(0, 60)}{replyingTo.content.length > 60 ? "…" : ""}</span>
+                  <button onClick={() => setReplyingTo(null)}><X size={13} strokeWidth={1.5} /></button>
+                </div>
+              )}
 
               <form className={styles.inputArea} onSubmit={handleSend}>
                 <input

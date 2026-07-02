@@ -21,7 +21,7 @@ model User {
   email     String   @unique
   password  String
   role      String   @default("etudiant") // etudiant | delegue | admin
-  valide    Boolean  @default(false) // false = en attente de validation admin
+  valide    Boolean  @default(false)
   createdAt DateTime @default(now())
 
   groupe   Groupe @relation(fields: [groupeId], references: [id])
@@ -31,9 +31,9 @@ model User {
   devoirsCreees      Devoir[]           @relation("AuteurDevoir")
   pushSubscriptions  PushSubscription[]
   messages           Message[]
+  reactions          Reaction[]
   passwordResets     PasswordReset[]
 }
-
 
 model PushSubscription {
   id       Int    @id @default(autoincrement())
@@ -81,15 +81,35 @@ model Channel {
 }
 
 model Message {
-  id        Int      @id @default(autoincrement())
+  id        Int       @id @default(autoincrement())
   content   String
-  createdAt DateTime @default(now())
+  createdAt DateTime  @default(now())
+  editedAt  DateTime?
 
   auteur   User    @relation(fields: [auteurId], references: [id], onDelete: Cascade)
   auteurId Int
 
   channel   Channel @relation(fields: [channelId], references: [id], onDelete: Cascade)
   channelId Int
+
+  replyTo   Message?   @relation("MessageReply", fields: [replyToId], references: [id], onDelete: SetNull)
+  replyToId Int?
+  replies   Message[]  @relation("MessageReply")
+
+  reactions Reaction[]
+}
+
+model Reaction {
+  id        Int     @id @default(autoincrement())
+  emoji     String
+
+  user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    Int
+
+  message   Message @relation(fields: [messageId], references: [id], onDelete: Cascade)
+  messageId Int
+
+  @@unique([userId, messageId, emoji])
 }
 
 model PasswordReset {
@@ -105,9 +125,9 @@ model PasswordReset {
 model Cours {
   id         Int    @id @default(autoincrement())
   matiere    String
-  jour       String // Lundi, Mardi...
-  heureDebut String // ex: "08:00"
-  heureFin   String // ex: "10:00"
+  jour       String
+  heureDebut String
+  heureFin   String
   salle      String?
   prof       String?
 
