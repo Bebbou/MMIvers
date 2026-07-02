@@ -37,7 +37,18 @@ export default function Layout({ children }) {
       {/* Sidebar desktop */}
       <aside className={`${styles.sidebar} ${menuOpen ? styles.sidebarOpen : ""}`}>
         <div className={styles.sidebarTop}>
-          <div className={styles.logo}>Pronote-MMI</div>
+          <div className={styles.logo}>
+            {/* Mini logo MMI circulaire */}
+            <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M16 3 A13 13 0 0 1 29 16" stroke="#ff7cb7" strokeWidth="5" strokeLinecap="round" fill="none"/>
+              <path d="M29 16 A13 13 0 0 1 16 29" stroke="#ff8d1a" strokeWidth="5" strokeLinecap="round" fill="none"/>
+              <path d="M16 29 A13 13 0 0 1 3 16" stroke="#469cd0" strokeWidth="5" strokeLinecap="round" fill="none" strokeDasharray="3 3"/>
+            </svg>
+            <div className={styles.logoText}>
+              <span className={styles.logoMain}>Pronote</span>
+              <span className={styles.logoSub}>MMI Béziers</span>
+            </div>
+          </div>
           <button className={styles.closeBtn} onClick={() => setMenuOpen(false)} aria-label="Fermer le menu">
             <X size={18} strokeWidth={1.5} />
           </button>
@@ -90,7 +101,7 @@ export default function Layout({ children }) {
           <button className={styles.menuBtn} onClick={() => setMenuOpen(true)} aria-label="Menu">
             <Menu size={20} strokeWidth={1.5} />
           </button>
-          <span className={styles.mobileTitle}>Pronote-MMI</span>
+          <span className={styles.mobileTitle}>Pronote · MMI Béziers</span>
           <button className={styles.themeIconBtn} onClick={toggleTheme}>
             {theme === "light" ? <Moon size={16} strokeWidth={1.5} /> : <Sun size={16} strokeWidth={1.5} />}
           </button>
