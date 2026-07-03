@@ -5,7 +5,7 @@ import api from "../api/index.js";
 import { FileText, Download, Trash2, MessageSquare, Send, ChevronDown, ChevronUp, Plus, X } from "lucide-react";
 import styles from "./Documents.module.css";
 
-const MATIERES = ["Intégration Web", "Design", "Vidéo", "Audio", "Développement", "Communication", "Autre"];
+const MATIERES = ["Comment savoir ?", "Test", "SdV", "Avenir","autres"]; // faudrat changer ici
 
 function formatSize(bytes) {
   if (bytes < 1024) return bytes + " o";
